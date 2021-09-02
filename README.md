@@ -25,6 +25,9 @@ Routex::patterns([
     ':hostname' => '((?!\-)(?:(?:[a-zA-Z\d][a-zA-Z\d\-]{0,61})?[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63})'
 ]);
 
+// Load external files for routing, so you can create seperate files per route;
+Routex::load(__DIR__.'/routes');
+
 // Example how to route the index;
 Routex::get('/', function(){
     echo 'Hello world!';

@@ -71,6 +71,13 @@ class Routex
         self::$error = $closure;
     }
 
+    public static function load($directory): void
+    {
+        foreach (glob(rtrim($directory, '/').'/*.php') as $route) {
+            include $route;
+        }
+    }
+
     public static function run(): ?bool
     {
         foreach (self::$routes as $method => $data) {
