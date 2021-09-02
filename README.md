@@ -9,7 +9,7 @@ This router has been developed due to the need of a very simple and lightweight 
 - URL rewriting (see .htaccess)
 
 ### Usage
-```
+```php
 <?php
 
 require_once __DIR__.'/Hybula/Routex/Routex.php';
