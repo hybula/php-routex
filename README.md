@@ -51,9 +51,11 @@ Routex::run();
 
 
 ### Placeholders
+Routex currently support the following placeholders, these are built in patterns and then converted to regex.
+
 - :domain = Matches any valid domain
 - :number = Matches any number (digits)
 - :word = Matches any word (letter, number, underscore)
 
-###
+### License
 Hybula Internal License
