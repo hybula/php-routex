@@ -21,9 +21,7 @@ Routex::error(404, function(){
 });
 
 // Enable basic debugging by printing pattern and routes;
-Routex::error(404, function(){
-    echo '404';
-});
+Routex::debug(true);
 
 // Load build in patterns and set optional custom patterns to be used in routing URLs later;
 Routex::patterns([
