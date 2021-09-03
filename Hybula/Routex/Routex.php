@@ -22,6 +22,7 @@ class Routex
     private static array $patterns = [];
     private static \Closure $error;
     private static int $code = 404;
+    private static bool $debug = false;
 
     private static function pcre($pattern): string
     {
@@ -33,7 +34,11 @@ class Routex
         return '/^'.$pattern.'$/';
     }
 
-    public static function patterns(array $patterns): void
+    public static function debug($debug = true) {
+        self::$debug = $debug;
+    }
+
+    public static function patterns(array $patterns = []): void
     {
         self::$patterns[':domain'] = '((?!\-)(?:(?:[a-zA-Z\d][a-zA-Z\d\-]{0,61})?[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63})';
         self::$patterns[':number'] = '(\d+)';
@@ -65,6 +70,12 @@ class Routex
         self::$routes['PUT'][self::pcre($pattern.'/')] = $closure;
     }
 
+    public static function delete($pattern, $closure): void
+    {
+        self::$routes['DELETE'][self::pcre($pattern)] = $closure;
+        self::$routes['DELETE'][self::pcre($pattern.'/')] = $closure;
+    }
+
     public static function error($code, $closure): void
     {
         self::$code = $code;
@@ -85,8 +96,14 @@ class Routex
                 foreach ($data as $pattern => $closure) {
                     $requestUri = ltrim(rawurldecode($_SERVER['REQUEST_URI']), '/');
                     if (preg_match($pattern, $requestUri, $params)) {
+                        if (self::$debug) {
+                            echo 'Success '.$requestUri.' >>> '.$pattern.PHP_EOL;
+                        }
                         array_shift($params);
                         return call_user_func_array($closure, array_values($params));
+                    }
+                    if (self::$debug) {
+                        echo 'Failed '.$requestUri.' >>> '.$pattern.PHP_EOL;
                     }
                 }
             }
