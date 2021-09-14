@@ -23,10 +23,14 @@ class Routex
     private static \Closure $error;
     private static int $code = 404;
     private static bool $debug = false;
+    private static bool $base = false;
 
     private static function pcre($pattern): string
     {
         $pattern = ltrim($pattern, '/');
+        if (self::$base) {
+            $pattern = self::$base.'/'.$pattern;
+        }
         $pattern = str_replace('/', '\/', $pattern);
         foreach (self::$patterns as $placeholder => $customPattern) {
             $pattern = str_replace($placeholder, $customPattern, $pattern);
@@ -34,7 +38,13 @@ class Routex
         return '/^'.$pattern.'$/';
     }
 
-    public static function debug($debug = true) {
+    public static function base($base = false): void
+    {
+        self::$base = trim($base, '/');
+    }
+
+    public static function debug($debug = true): void
+    {
         self::$debug = $debug;
     }
 

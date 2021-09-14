@@ -23,6 +23,9 @@ Routex::error(404, function(){
 // Enable basic debugging by printing pattern and routes;
 Routex::debug(true);
 
+// Change the base URL, use this if you are routing inside a directory instead of root;
+Routex::base('/v1/');
+
 // Load build in patterns and set optional custom patterns to be used in routing URLs later;
 Routex::patterns([
     ':hostname' => '((?!\-)(?:(?:[a-zA-Z\d][a-zA-Z\d\-]{0,61})?[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63})'
