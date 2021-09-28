@@ -27,7 +27,7 @@ class Routex
 
     private static function pcre($pattern): string
     {
-        $pattern = ltrim($pattern, '/');
+        $pattern = trim($pattern, '/');
         if (self::$base) {
             $pattern = self::$base.'/'.$pattern;
         }
@@ -104,7 +104,7 @@ class Routex
         foreach (self::$routes as $method => $data) {
             if ($method == $_SERVER['REQUEST_METHOD']) {
                 foreach ($data as $pattern => $closure) {
-                    $requestUri = ltrim(rawurldecode($_SERVER['REQUEST_URI']), '/');
+                    $requestUri = trim(rawurldecode($_SERVER['REQUEST_URI']), '/');
                     if (preg_match($pattern, $requestUri, $params)) {
                         if (self::$debug) {
                             echo 'Success '.$requestUri.' >>> '.$pattern.PHP_EOL;
