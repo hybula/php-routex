@@ -5,7 +5,7 @@ Simple and fast URL router powered by regex with predefined patterns.
 This router has been developed due to the need of a very simple and lightweight router. Unlike routers used in (micro-)frameworks, this class is just one file. It offers powerful routing using PCRE compliant regex, or simply use the built in placeholders.
 
 ### Requirements
-- PHP 8.x
+- PHP 7.4+
 - URL rewriting (see .htaccess)
 
 ### Usage
