@@ -66,5 +66,8 @@ Routex currently support the following placeholders, these are built in patterns
 - :number = Matches any number (digits)
 - :word = Matches any word (letter, number, underscore)
 
+### Contribute
+Contributions are welcome in a form of a pull request (PR).
+
 ### License
 Mozilla Public License Version 2.0
