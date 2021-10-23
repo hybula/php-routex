@@ -1,33 +1,46 @@
-<?php declare(strict_types=1);
-// =================================================================
-// =================================================================
-// **   _  ___   _____ _   _ _      _                             **
-// **  | || \ \ / / _ ) | | | |    /_\                            **
-// **  | __ |\ V /| _ \ |_| | |__ / _ \                           **
-// **  |_||_| |_| |___/\___/|____/_/ \_\                          **
-// **                                                             **
-// **  Copyright (C) HYBULA B.V. - All Rights Reserved            **
-// **  This is proprietary and confidential software,             **
-// **  unauthorized copying of this code is strictly prohibited.  **
-// **                                                             **
-// =================================================================
-// =================================================================
+<?php
+
+declare(strict_types=1);
+/**
+ * =========================================
+ * =========================================
+ * **   _  ___   _____ _   _ _      _     **
+ * **  | || \ \ / / _ ) | | | |    /_\    **
+ * **  | __ |\ V /| _ \ |_| | |__ / _ \   **
+ * **  |_||_| |_| |___/\___/|____/_/ \_\  **
+ * **                                     **
+ * =========================================
+ * =========================================
+ *
+ * Routex PHP Router (PHP)
+ *
+ * @package Hybula\Routex
+ * @author Hybula Development Team <development@hybula.com>
+ * @version 1.0.1
+ * @copyright Hybula B.V.
+ * @license MPL-2.0 License
+ * @see https://github.com/hybula/php-routex/
+ */
 
 namespace Hybula\Routex;
 
 class Routex
 {
 
-    private static array $routes = [];
-    private static array $patterns = [];
-    private static \Closure $error;
-    private static int $code = 404;
-    private static bool $debug = false;
-    private static bool $base = false;
+    private static $routes = [];
+    private static $patterns = [];
+    private static $error;
+    private static $code = 404;
+    private static $debug = false;
+    private static $base = false;
 
-    private static function pcre($pattern): string
+    private static function pcre($pattern, $redundant = false): string
     {
-        $pattern = trim($pattern, '/');
+        if ($redundant) {
+            $pattern = ltrim($pattern, '/');
+        } else {
+            $pattern = trim($pattern, '/');
+        }
         if (self::$base) {
             $pattern = self::$base.'/'.$pattern;
         }
@@ -59,31 +72,31 @@ class Routex
     public static function get($pattern, $closure): void
     {
         self::$routes['GET'][self::pcre($pattern)] = $closure;
-        self::$routes['GET'][self::pcre($pattern.'/')] = $closure;
+        self::$routes['GET'][self::pcre($pattern . '/', true)] = $closure;
     }
 
     public static function post($pattern, $closure): void
     {
         self::$routes['POST'][self::pcre($pattern)] = $closure;
-        self::$routes['POST'][self::pcre($pattern.'/')] = $closure;
+        self::$routes['POST'][self::pcre($pattern . '/', true)] = $closure;
     }
 
     public static function patch($pattern, $closure): void
     {
         self::$routes['PATCH'][self::pcre($pattern)] = $closure;
-        self::$routes['PATCH'][self::pcre($pattern.'/')] = $closure;
+        self::$routes['PATCH'][self::pcre($pattern . '/', true)] = $closure;
     }
 
     public static function put($pattern, $closure): void
     {
         self::$routes['PUT'][self::pcre($pattern)] = $closure;
-        self::$routes['PUT'][self::pcre($pattern.'/')] = $closure;
+        self::$routes['PUT'][self::pcre($pattern . '/', true)] = $closure;
     }
 
     public static function delete($pattern, $closure): void
     {
         self::$routes['DELETE'][self::pcre($pattern)] = $closure;
-        self::$routes['DELETE'][self::pcre($pattern.'/')] = $closure;
+        self::$routes['DELETE'][self::pcre($pattern . '/', true)] = $closure;
     }
 
     public static function error($code, $closure): void
@@ -94,26 +107,27 @@ class Routex
 
     public static function load($directory): void
     {
-        foreach (glob(rtrim($directory, '/').'/*.php') as $route) {
+        foreach (glob(rtrim($directory, '/') . '/*.php') as $route) {
             include $route;
         }
     }
 
     public static function run(): ?bool
     {
+        $requestUri = trim(rawurldecode($_SERVER['REQUEST_URI']), '/');
+        $requestUri = explode('?', $requestUri)[0];
         foreach (self::$routes as $method => $data) {
             if ($method == $_SERVER['REQUEST_METHOD']) {
                 foreach ($data as $pattern => $closure) {
-                    $requestUri = trim(rawurldecode($_SERVER['REQUEST_URI']), '/');
                     if (preg_match($pattern, $requestUri, $params)) {
                         if (self::$debug) {
-                            echo 'Success '.$requestUri.' >>> '.$pattern.PHP_EOL;
+                            echo 'Success ' . $requestUri . ' >>> ' . $pattern . PHP_EOL;
                         }
                         array_shift($params);
                         return call_user_func_array($closure, array_values($params));
                     }
                     if (self::$debug) {
-                        echo 'Failed '.$requestUri.' >>> '.$pattern.PHP_EOL;
+                        echo 'Failed ' . $requestUri . ' >>> ' . $pattern . PHP_EOL;
                     }
                 }
             }

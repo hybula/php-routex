@@ -67,4 +67,4 @@ Routex currently support the following placeholders, these are built in patterns
 - :word = Matches any word (letter, number, underscore)
 
 ### License
-Hybula Internal License
+Mozilla Public License Version 2.0

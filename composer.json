@@ -1,0 +1,27 @@
+{
+  "name": "hybula/php-routex",
+  "description": "High performance and simple PHP router.",
+  "license": "MPL-2.0",
+  "homepage": "https://www.hybula.com/",
+  "authors": [
+    {
+      "name": "Hybula Development Team",
+      "email": "development@hybula.com",
+      "homepage": "https://www.hybula.com/",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support@hybula.com",
+    "forum": "https://community.hybula.com/",
+    "wiki": "https://community.hybula.com/"
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hybula\\Routex\\": "src/Hybula/Routex/"
+    }
+  }
+}
