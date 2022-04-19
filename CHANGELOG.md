@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 19-04-2022
+### Fixed
+- Bug that broke GET on /.
+
 ## [1.0.1] - 23-10-2021
 ### Fixed
 - Bug that prevented routing when you use GET parameters (reported and fixed by @ayyylias).

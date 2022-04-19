@@ -114,7 +114,7 @@ class Routex
 
     public static function run(): ?bool
     {
-        $requestUri = trim(rawurldecode($_SERVER['REQUEST_URI']), '/');
+        $requestUri = ltrim(rawurldecode($_SERVER['REQUEST_URI']), '/');
         $requestUri = explode('?', $requestUri)[0];
         foreach (self::$routes as $method => $data) {
             if ($method == $_SERVER['REQUEST_METHOD']) {
